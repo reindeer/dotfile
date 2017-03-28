@@ -1,0 +1,27 @@
+#autoload
+
+local expl known_hosts hostsfiles f tmp
+
+if ! zstyle -a ":completion:${curcontext}:hosts" hosts known_hosts; then
+  (( $+_cache_known_hosts )) || {
+    # Find ssh_config
+    hostsfiles=( )
+    _cache_known_hosts=( )
+    for f in /etc/ssh/ssh_config /etc/ssh2/ssh_config /etc/openssh/ssh_config $HOME/.ssh/config $HOME/.ssh/config; do
+      [[ -r "$f" ]] || continue
+      hostsfiles+=( ${${${(M)${(f)"$(<"$f")"}:#(#i)(Global|User)KnownHostsFile*}##(#i)(Global|User)KnownHostsFile[[:blank:]]#}%%[[:blank:]]#[#]*})
+      _cache_known_hosts+=( ${=${${(M)${(f)"$(<"$f")"}:#(#i)Host[[:blank:]]##([^*?]##)}##(#i)Host[[:blank:]]#}%%[[:blank:]]#[#]*} )
+    done
+    : ${(A)=hostsfiles:=/etc/ssh/ssh_known_hosts /etc/ssh/ssh_known_hosts2 /etc/known_hosts /etc/known_hosts2 $HOME/.ssh/known_hosts $HOME/.ssh/known_hosts2}
+    for f in "${(@)hostsfiles}"; do
+      [[ -r "$f" ]] || continue
+      _cache_known_hosts+=( ${${${${(f)"$(<"$f")"}:#.*}%%\ *}%%,*} )
+    done
+
+  }
+
+  known_hosts=( "${(@)_cache_known_hosts}" )
+fi
+
+_wanted known_hosts expl host \
+    compadd -M 'm:{a-zA-Z}={A-Za-z} r:|.=* r:|=*' -a "$@" - known_hosts
