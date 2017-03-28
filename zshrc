@@ -84,7 +84,7 @@ zstyle ':completion:*:processes-names' command 'ps axho command'
 
 # Set up must-have aliases and alias file.
 #
-if [ -n $ITERM_SESSION_ID ]; then
+if [ ! -z $ITERM_SESSION_ID ]; then
 	alias ls='ls -hG'
 	alias vim='open -a MacVim'
 	chpwd() {ls -hG}
