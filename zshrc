@@ -133,9 +133,7 @@ local user_host="$host_color%n@%m$PR_NO_COLOUR"
 local root_host="$PR_RED%m$PR_NO_COLOUR"
 local date_prompt="[%D{%Y-%m-%d %H:%M:%S}]"
 if [[ ${EUID} == 0 ]] ; then
-	PROMPT="$root_color${(r:$COLUMNS::—:)}"$'\n'"${user_host} ${date_prompt}"$'\n'"${path_p} $PR_BLUE"$'\n'"$PR_NO_COLOUR# "
-	#PROMPT="${root_host} ${date_prompt} $host_color${(r:$COLUMNS/2::—:)}"$'\n'"${path_p} $PR_BLUE"$'\n'"$PR_NO_COLOUR# "
+	PROMPT="$root_color${(r:$COLUMNS::—:)}"$'\n\r'"${user_host} ${date_prompt}"$'\n\r'"${path_p} $PR_BLUE"$'\n\r'"$PR_NO_COLOUR# "
 else
-	PROMPT="$host_color${(r:$COLUMNS::—:)}"$'\n'"${user_host} ${date_prompt}"$'\n'"${path_p} $PR_BLUE"$'\n'"$PR_NO_COLOUR$ "
-	#PROMPT="${user_host} ${date_prompt} $host_color${(r:$COLUMNS/2::—:)}"$'\n'"${path_p} $PR_BLUE"$'\n'"$PR_NO_COLOUR$ "
+	PROMPT="$host_color${(r:$COLUMNS::—:)}"$'\n\r'"${user_host} ${date_prompt}"$'\n\r'"${path_p} $PR_BLUE"$'\n\r'"$PR_NO_COLOUR$ "
 fi
